@@ -1,270 +1,330 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lotificación Nueva Jerusalem - Asesor</title>
-    <meta name="description" content="Portal del asesor para consultar lotes, mapa y disponibilidad de la Lotificación Nueva Jerusalem.">
+    <meta name="description"
+        content="Portal del asesor para consultar lotes, mapa y disponibilidad de la Lotificación Nueva Jerusalem.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-        :root {
-            --bg:        #0d1117;
-            --surface:   #161b22;
-            --border:    #30363d;
-            --accent:    #58a6ff;
-            --accent2:   #3fb950;
-            --accent3:   #f78166;
-            --text:      #e6edf3;
-            --muted:     #8b949e;
-            --card-bg:   #21262d;
-            --card-hover:#2d333b;
-            --radius:    14px;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
 
         body {
-            font-family: 'Inter', sans-serif;
-            background: var(--bg);
-            color: var(--text);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #f8f9fa;
+            color: #1f2937;
+            line-height: 1.6;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
         }
 
         /* TOP BAR */
-        .topbar {
+        header {
+            background: #ffffff;
+            border-bottom: 1px solid #e5e7eb;
+            padding: 16px 24px;
             display: flex;
             justify-content: flex-end;
-            align-items: center;
-            padding: 12px 24px;
-            background: var(--surface);
-            border-bottom: 1px solid var(--border);
         }
 
-        .topbar a {
+        header a {
             display: inline-flex;
             align-items: center;
-            gap: 6px;
-            color: var(--muted);
+            gap: 8px;
+            padding: 8px 16px;
+            background: #2563eb;
+            color: white;
             text-decoration: none;
-            font-size: 13px;
-            font-weight: 500;
-            padding: 6px 14px;
-            border: 1px solid var(--border);
             border-radius: 6px;
-            transition: all .2s;
+            font-size: 14px;
+            font-weight: 500;
+            transition: background 0.2s;
         }
 
-        .topbar a:hover {
-            color: var(--text);
-            border-color: var(--accent);
-            background: rgba(88, 166, 255, .08);
+        header a:hover {
+            background: #1d4ed8;
         }
 
-        /* HERO */
-        .hero {
+        /* MAIN CONTENT */
+        main {
             flex: 1;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 64px 24px 48px;
-            text-align: center;
+            padding: 60px 24px 40px;
         }
 
+        /* HERO SECTION */
         .hero-badge {
             display: inline-block;
-            background: rgba(255, 255, 255, .05);
-            border: 1px solid var(--border);
-            color: var(--muted);
+            background: #dbeafe;
+            color: #1e40af;
             font-size: 12px;
             font-weight: 600;
-            padding: 4px 14px;
-            border-radius: 999px;
-            letter-spacing: .06em;
+            padding: 6px 12px;
+            border-radius: 20px;
             text-transform: uppercase;
-            margin-bottom: 20px;
+            letter-spacing: 0.5px;
+            margin-bottom: 24px;
         }
 
-        .hero h1 {
-            font-size: clamp(2rem, 5vw, 3.2rem);
-            font-weight: 800;
-            line-height: 1.15;
-            color: var(--text);
-            margin-bottom: 14px;
+        h1 {
+            font-size: clamp(2rem, 5vw, 3rem);
+            font-weight: 700;
+            text-align: center;
+            color: #111827;
+            line-height: 1.2;
+            margin-bottom: 16px;
         }
 
-        .hero p {
-            color: var(--muted);
+        .hero-description {
+            text-align: center;
+            color: #6b7280;
             font-size: 16px;
-            max-width: 460px;
+            max-width: 500px;
+            margin: 0 auto 48px;
             line-height: 1.6;
-            margin-bottom: 56px;
         }
 
         /* CARDS GRID */
-        .cards {
+        .cards-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 20px;
-            max-width: 920px;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
             width: 100%;
+            max-width: 1000px;
             margin: 0 auto;
         }
 
         .card {
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            padding: 32px 28px;
-            text-decoration: none;
-            color: inherit;
             display: flex;
             flex-direction: column;
-            align-items: flex-start;
-            gap: 14px;
-            transition: transform .22s ease, border-color .22s ease, background .22s ease, box-shadow .22s ease;
+            padding: 32px;
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 10px;
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.3s ease;
             position: relative;
-            overflow: hidden;
-        }
-
-        .card::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            opacity: 0;
-            transition: opacity .22s;
         }
 
         .card:hover {
+            border-color: #2563eb;
+            box-shadow: 0 10px 25px rgba(37, 99, 235, 0.1);
             transform: translateY(-4px);
-            background: var(--card-hover);
-            box-shadow: 0 16px 40px rgba(0,0,0,.45);
         }
 
-        .card:hover::before { opacity: 1; }
-
-        /* Card color accents - Neutral */
-        .card-lista { border-top: 3px solid var(--border); }
-        .card-lista:hover { border-color: var(--muted); }
-        .card-lista::before { background: linear-gradient(180deg, rgba(255,255,255,.03) 0%, transparent 60%); }
-
-        .card-index { border-top: 3px solid var(--border); }
-        .card-index:hover { border-color: var(--muted); }
-        .card-index::before { background: linear-gradient(180deg, rgba(255,255,255,.03) 0%, transparent 60%); }
-
-        .card-mapa { border-top: 3px solid var(--border); }
-        .card-mapa:hover { border-color: var(--muted); }
-        .card-mapa::before { background: linear-gradient(180deg, rgba(255,255,255,.03) 0%, transparent 60%); }
-
         .card-icon {
-            width: 48px;
-            height: 48px;
+            width: 56px;
+            height: 56px;
+            background: #eff6ff;
             border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 22px;
-            background: rgba(255, 255, 255, .05);
-            border: 1px solid var(--border);
+            margin-bottom: 16px;
+            font-size: 24px;
+            color: #2563eb;
+        }
+
+        .card:hover .card-icon {
+            background: #2563eb;
+            color: white;
         }
 
         .card-title {
             font-size: 18px;
-            font-weight: 700;
-            color: var(--text);
+            font-weight: 600;
+            color: #111827;
+            margin-bottom: 8px;
         }
 
-        .card-desc {
+        .card-description {
             font-size: 14px;
-            color: var(--muted);
-            line-height: 1.55;
-            flex: 1;
+            color: #6b7280;
+            line-height: 1.6;
+            flex-grow: 1;
+            margin-bottom: 16px;
+        }
+
+        .card-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-top: 16px;
+            border-top: 1px solid #f3f4f6;
+        }
+
+        .card-link {
+            font-size: 14px;
+            font-weight: 500;
+            color: #2563eb;
         }
 
         .card-arrow {
-            font-size: 20px;
-            color: var(--muted);
-            transition: transform .22s, color .22s;
-            align-self: flex-end;
+            font-size: 18px;
+            color: #2563eb;
+            transition: transform 0.2s;
         }
 
         .card:hover .card-arrow {
             transform: translateX(4px);
-            color: var(--text);
         }
 
         /* FOOTER */
         footer {
             text-align: center;
-            padding: 20px;
-            color: var(--muted);
-            font-size: 12px;
-            border-top: 1px solid var(--border);
+            padding: 24px;
+            color: #9ca3af;
+            font-size: 13px;
+            border-top: 1px solid #e5e7eb;
+            background: #ffffff;
         }
 
-        @media (max-width: 600px) {
-            .hero { padding: 40px 16px 32px; }
-            .cards { padding: 0 4px; }
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            main {
+                padding: 40px 20px 32px;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .cards-grid {
+                gap: 16px;
+            }
+
+            .card {
+                padding: 24px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            main {
+                padding: 32px 16px 24px;
+            }
+
+            h1 {
+                font-size: 1.75rem;
+            }
+
+            .cards-grid {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
+
 <body>
 
-    <!-- TOP BAR: Botón ir al Login -->
-    <header class="topbar">
-        <a href="{{ route('login') }}" id="btn-ir-login">
-            🔐 Iniciar sesión (Oficina)
+    <!-- TOP BAR -->
+    <header>
+        
+        <a href="{{ route('login') }}">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2">
+                <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
+                <polyline points="10 17 15 12 10 7"></polyline>
+                <line x1="15" y1="12" x2="3" y2="12"></line>
+            </svg>
+            Iniciar sesión
         </a>
     </header>
 
-    <!-- HERO -->
-    <main class="hero">
+    <!-- MAIN CONTENT -->
+    <main>
+        
         <span class="hero-badge">Portal Asesor</span>
-        <h1>Lotificación<br>Nueva Jerusalem</h1>
-        <p>Consulta el estado de los lotes, el mapa de la lotificación y el listado interactivo sin necesidad de iniciar sesión.</p>
+        <h1>Lotificación Nueva Jerusalem</h1>
+        <p class="hero-description">
+            Consulta el estado de los lotes, el mapa de la lotificación y el listado interactivo sin necesidad de
+            iniciar sesión.
+        </p>
 
-        <div class="cards">
-
+        <!-- CARDS -->
+        <div class="cards-grid">
             <!-- LISTA DE LOTES -->
-            <a href="{{ route('asesor.lista') }}" class="card card-lista" id="btn-lista-lotes">
-                <div class="card-icon icon-lista">📋</div>
-                <div class="card-title">Lista de Lotes</div>
-                <div class="card-desc">
-                    Consulta los lotes vendidos, en reserva y pendientes de enganche con sus detalles y adquirientes.
+            <a href="{{ route('asesor.lista') }}" class="card">
+                <div class="card-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2">
+                        <path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"></path>
+                    </svg>
                 </div>
-                <div class="card-arrow">→</div>
+                <h3 class="card-title">Lista de Lotes</h3>
+                <p class="card-description">
+                    Consulta los lotes vendidos, en reserva y pendientes de enganche con sus detalles y adquirientes.
+                </p>
+                <div class="card-footer">
+                    <span class="card-link">Ver detalles</span>
+                    <span class="card-arrow">→</span>
+                </div>
             </a>
 
             <!-- LOTIFICACION INDEX -->
-            <a href="{{ route('asesor.index') }}" class="card card-index" id="btn-lotificacion-index">
-                <div class="card-icon icon-index">🗂️</div>
-                <div class="card-title">Lotificación Interactiva</div>
-                <div class="card-desc">
-                    Vista interactiva con todos los lotes codificados por color según su estado actual.
+            <a href="{{ route('asesor.index') }}" class="card">
+                <div class="card-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2">
+                        <rect x="3" y="3" width="7" height="7"></rect>
+                        <rect x="14" y="3" width="7" height="7"></rect>
+                        <rect x="14" y="14" width="7" height="7"></rect>
+                        <rect x="3" y="14" width="7" height="7"></rect>
+                    </svg>
                 </div>
-                <div class="card-arrow">→</div>
+                <h3 class="card-title">Lotificación Interactiva</h3>
+                <p class="card-description">
+                    Vista interactiva con todos los lotes codificados por color según su estado actual.
+                </p>
+                <div class="card-footer">
+                    <span class="card-link">Ver detalles</span>
+                    <span class="card-arrow">→</span>
+                </div>
             </a>
 
             <!-- MAPA -->
-            <a href="{{ route('asesor.mapa') }}" class="card card-mapa" id="btn-ver-mapa">
-                <div class="card-icon icon-mapa">🗺️</div>
-                <div class="card-title">Ver Mapa</div>
-                <div class="card-desc">
-                    Visualiza el plano completo de la lotificación en formato PDF directamente en el navegador.
+            <a href="{{ route('asesor.mapa') }}" class="card">
+                <div class="card-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2">
+                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                        <circle cx="12" cy="10" r="3"></circle>
+                    </svg>
                 </div>
-                <div class="card-arrow">→</div>
+                <h3 class="card-title">Ver Mapa</h3>
+                <p class="card-description">
+                    Visualiza el plano completo de la lotificación en formato PDF directamente en el navegador.
+                </p>
+                <div class="card-footer">
+                    <span class="card-link">Ver detalles</span>
+                    <span class="card-arrow">→</span>
+                </div>
             </a>
-
         </div>
+        
     </main>
 
+    <!-- FOOTER -->
     <footer>
-        &copy; {{ date('Y') }} Lotificación Nueva Jerusalem &mdash; Portal de Asesores
+        &copy; {{ date('Y') }} Lotificación Nueva Jerusalem &mdash; Portal de Asesores.
+        
+        </p>
+        
+        <span style="color:rgba(255,255,255,0.65); font-weight:600; ">Desarrollado por Jsoft </span>
     </footer>
 
 </body>
+
 </html>

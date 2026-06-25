@@ -1,27 +1,36 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lista de Lotes - Lotificación Nueva Jerusalem</title>
-    <meta name="description" content="Lista de lotes vendidos, en reserva y pendientes de enganche de la Lotificación Nueva Jerusalem.">
+    <meta name="description"
+        content="Lista de lotes vendidos, en reserva y pendientes de enganche de la Lotificación Nueva Jerusalem.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
     <!-- Alpine.js -->
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <style>
-        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
         :root {
-            --bg:      #0d1117;
+            --bg: #0d1117;
             --surface: #161b22;
-            --border:  #30363d;
-            --accent:  #58a6ff;
-            --text:    #e6edf3;
-            --muted:   #8b949e;
-            --card:    #21262d;
-            --radius:  12px;
+            --border: #30363d;
+            --accent: #58a6ff;
+            --text: #e6edf3;
+            --muted: #8b949e;
+            --card: #21262d;
+            --radius: 12px;
         }
 
         body {
@@ -67,7 +76,7 @@
         .topbar a.back-btn:hover {
             color: var(--text);
             border-color: var(--accent);
-            background: rgba(88,166,255,.08);
+            background: rgba(88, 166, 255, .08);
         }
 
         .topbar-title {
@@ -115,7 +124,9 @@
         }
 
         @media (max-width: 900px) {
-            .grid-layout { grid-template-columns: 1fr; }
+            .grid-layout {
+                grid-template-columns: 1fr;
+            }
         }
 
         .panel {
@@ -149,7 +160,9 @@
             transition: border-color .2s;
         }
 
-        input[type="text"]:focus { border-color: var(--accent); }
+        input[type="text"]:focus {
+            border-color: var(--accent);
+        }
 
         /* LOTE LIST */
         .lote-list {
@@ -175,8 +188,15 @@
             font-family: inherit;
         }
 
-        .lote-btn:hover { background: rgba(88,166,255,.06); border-color: rgba(88,166,255,.4); }
-        .lote-btn.active { border-color: var(--accent); background: rgba(88,166,255,.1); }
+        .lote-btn:hover {
+            background: rgba(88, 166, 255, .06);
+            border-color: rgba(88, 166, 255, .4);
+        }
+
+        .lote-btn.active {
+            border-color: var(--accent);
+            background: rgba(88, 166, 255, .1);
+        }
 
         .lote-btn-code {
             font-size: 13px;
@@ -222,7 +242,9 @@
             padding: 12px 14px;
         }
 
-        .detail-field.full { grid-column: 1 / -1; }
+        .detail-field.full {
+            grid-column: 1 / -1;
+        }
 
         .detail-field-label {
             font-size: 11px;
@@ -259,20 +281,25 @@
         }
     </style>
 </head>
+
 <body x-data="{
     search: '',
     selectedId: null,
-    lotes: {{ Js::from($lotes->map(fn($lote) => [
-        'id' => $lote->id,
-        'codigo' => $lote->codigo,
-        'estado' => $lote->estado,
-        'estado_label' => \App\Models\Lote::LABELS[$lote->estado] ?? ucfirst($lote->estado),
-        'fecha_cambio' => $lote->getRawOriginal('fecha_cambio_estado')
-            ? \Illuminate\Support\Carbon::parse($lote->getRawOriginal('fecha_cambio_estado'), 'UTC')->timezone('America/Guatemala')->format('d/m/Y H:i')
-            : 'Sin registro',
-        'adquiriente' => $lote->nombre_adquiriente ?: 'No registrado',
-        'observaciones' => $lote->observaciones ?: 'Sin observaciones',
-    ])->values()) }},
+    lotes: {{ Js::from(
+        $lotes->map(
+                fn($lote) => [
+                    'id' => $lote->id,
+                    'codigo' => $lote->codigo,
+                    'estado' => $lote->estado,
+                    'estado_label' => \App\Models\Lote::LABELS[$lote->estado] ?? ucfirst($lote->estado),
+                    'fecha_cambio' => $lote->getRawOriginal('fecha_cambio_estado')
+                        ? \Illuminate\Support\Carbon::parse($lote->getRawOriginal('fecha_cambio_estado'), 'UTC')->timezone('America/Guatemala')->format('d/m/Y H:i')
+                        : 'Sin registro',
+                    'adquiriente' => $lote->nombre_adquiriente ?: 'No registrado',
+                    'observaciones' => $lote->observaciones ?: 'Sin observaciones',
+                ],
+            )->values(),
+    ) }},
     filtered() {
         const q = this.search.toLowerCase().trim();
         if (!q) return this.lotes;
@@ -310,16 +337,13 @@
             <!-- PANEL IZQUIERDO: Búsqueda y lista -->
             <div class="panel">
                 <label class="search-label">Buscar</label>
-                <input x-model.debounce.250ms="search" type="text" placeholder="Código o nombre" id="input-buscar-lote" />
+                <input x-model.debounce.250ms="search" type="text" placeholder="Código o nombre"
+                    id="input-buscar-lote" />
 
                 <div class="lote-list">
                     <template x-for="lote in filtered()" :key="lote.id">
-                        <button
-                            type="button"
-                            class="lote-btn"
-                            :class="selectedId === lote.id ? 'active' : ''"
-                            @click="selectedId = lote.id"
-                        >
+                        <button type="button" class="lote-btn" :class="selectedId === lote.id ? 'active' : ''"
+                            @click="selectedId = lote.id">
                             <span class="lote-btn-code" x-text="lote.codigo"></span>
                             <span class="lote-btn-estado" x-text="lote.estado_label"></span>
                         </button>
@@ -377,4 +401,5 @@
     </footer>
 
 </body>
+
 </html>

@@ -1,0 +1,1 @@
+<img src="/img/logo.jpeg" alt="Logo" class="w-10 h-10">

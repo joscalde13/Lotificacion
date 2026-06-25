@@ -13,7 +13,7 @@
             <flux:sidebar.nav>
                 <flux:sidebar.group :heading="__('Sistema')" class="grid">
                     <flux:sidebar.item icon="home" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>
-                        {{ __('Dashboard') }}
+                        {{ __('Metricas') }}
                     </flux:sidebar.item>
 
                     <flux:sidebar.item icon="map" :href="route('lotificacion.index')" :current="request()->routeIs('lotificacion.index')" wire:navigate>
