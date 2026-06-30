@@ -191,7 +191,7 @@
             </div>
             <a href="{{ asset('mapa-lotificacion.pdf') }}" download="mapa-lotificacion-nueva-jerusalem.pdf"
                class="btn-download" id="btn-descargar-pdf">
-                ⬇️ Descargar PDF
+                 Descargar PDF
             </a>
         </div>
 

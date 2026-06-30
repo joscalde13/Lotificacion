@@ -10,8 +10,9 @@ class LotificacionViewController extends Controller
     {
         $lotes = Lote::query()
             ->whereIn('estado', [Lote::ESTADO_VENDIDO, Lote::ESTADO_RESERVA, Lote::ESTADO_PENDIENTE_ENGANCHE])
-            ->orderBy('codigo')
-            ->get();
+            ->get()
+            ->sortBy('codigo', SORT_NATURAL)
+            ->values();
 
         return view('lotificacion.lista', [
             'lotes' => $lotes,

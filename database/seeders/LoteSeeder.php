@@ -15,6 +15,8 @@ class LoteSeeder extends Seeder
         /** @var array<int, string> $codigos */
         $codigos = require database_path('seeders/data/lotes_nueva_jerusalem.php');
 
+        Lote::truncate();
+
         $payload = array_map(static fn (string $codigo): array => [
             'codigo' => $codigo,
             'estado' => Lote::ESTADO_DISPONIBLE,

@@ -34,9 +34,9 @@ class AsesorController extends Controller
      */
     public function index()
     {
-        $lotes = Lote::query()
-            ->orderBy('codigo')
+        $filteredLotes = Lote::query()
             ->get()
+            ->sortBy('codigo', SORT_NATURAL)
             ->mapWithKeys(fn (Lote $lote): array => [
                 $lote->codigo => [
                     'codigo'      => $lote->codigo,
@@ -47,8 +47,16 @@ class AsesorController extends Controller
             ])
             ->all();
 
+        $groupedLotes = [];
+        foreach ($filteredLotes as $codigo => $lote) {
+            preg_match('/[a-zA-Z]+/', (string) $codigo, $matches);
+            $letter = strtoupper($matches[0] ?? '#');
+            $groupedLotes[$letter][$codigo] = $lote;
+        }
+        ksort($groupedLotes);
+
         return view('VistaAsesor.lotificacion-index', [
-            'lotes' => $lotes,
+            'groupedLotes' => $groupedLotes,
         ]);
     }
 

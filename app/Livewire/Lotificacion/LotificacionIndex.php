@@ -31,8 +31,8 @@ class LotificacionIndex extends Component
     public function loadLotes(): void
     {
         $this->lotes = Lote::query()
-            ->orderBy('codigo')
             ->get()
+            ->sortBy('codigo', SORT_NATURAL)
             ->mapWithKeys(fn (Lote $lote): array => [
                 $lote->codigo => [
                     'codigo' => $lote->codigo,
@@ -65,7 +65,16 @@ class LotificacionIndex extends Component
             })
             ->all();
 
+        $groupedLotes = [];
+        foreach ($filteredLotes as $codigo => $lote) {
+            preg_match('/[a-zA-Z]+/', (string) $codigo, $matches);
+            $letter = strtoupper($matches[0] ?? '#');
+            $groupedLotes[$letter][$codigo] = $lote;
+        }
+        ksort($groupedLotes);
+
         return view('livewire.lotificacion.lotificacion-index', [
+            'groupedLotes' => $groupedLotes,
             'filteredLotes' => $filteredLotes,
         ]);
     }

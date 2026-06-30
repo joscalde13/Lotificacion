@@ -153,16 +153,36 @@
             color: var(--muted);
         }
 
-        /* LOTES GRID */
-        .lotes-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(88px, 1fr));
-            gap: 8px;
+        /* LOTES COLUMNS */
+        .lotes-container {
+            column-count: 2;
+            column-gap: 16px;
+        }
+        @media (min-width: 640px) { .lotes-container { column-count: 3; } }
+        @media (min-width: 768px) { .lotes-container { column-count: 4; } }
+        @media (min-width: 1024px) { .lotes-container { column-count: 6; } }
+        @media (min-width: 1280px) { .lotes-container { column-count: 8; } }
+
+        .lote-group {
+            break-inside: avoid;
+            margin-bottom: 24px;
+        }
+
+        .lote-group-title {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--text);
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 4px;
+            margin-bottom: 12px;
         }
 
         .lote-btn {
+            display: block;
+            width: 100%;
             border-radius: 8px;
             border: 2px solid transparent;
+            margin-bottom: 8px;
             padding: 9px 10px;
             text-align: left;
             font-size: 12px;
@@ -224,19 +244,24 @@
                 <span>🟣 Pendiente de enganche</span>
             </div>
 
-            <div class="lotes-grid" id="lotes-grid">
-                @forelse ($lotes as $codigo => $lote)
-                    <div
-                        class="lote-btn"
-                        data-codigo="{{ strtolower($codigo) }}"
-                        data-estado="{{ strtolower($lote['estado_label']) }}"
-                        title="{{ $lote['estado_label'] }}"
-                        style="background-color: {{ $lote['color'] }}22; border-color: {{ $lote['color'] }};"
-                    >
-                        {{ $codigo }}
+            <div class="lotes-container" id="lotes-container">
+                @forelse ($groupedLotes as $letter => $lotes)
+                    <div class="lote-group">
+                        <div class="lote-group-title">Letra {{ $letter }}</div>
+                        @foreach ($lotes as $codigo => $lote)
+                            <div
+                                class="lote-btn"
+                                data-codigo="{{ strtolower($codigo) }}"
+                                data-estado="{{ strtolower($lote['estado_label']) }}"
+                                title="{{ $lote['estado_label'] }}"
+                                style="background-color: {{ $lote['color'] }}22; border-color: {{ $lote['color'] }};"
+                            >
+                                {{ $codigo }}
+                            </div>
+                        @endforeach
                     </div>
                 @empty
-                    <div class="empty-msg">No se encontraron lotes.</div>
+                    <div class="empty-msg" id="lotes-empty-msg">No se encontraron lotes.</div>
                 @endforelse
             </div>
         </div>
@@ -249,15 +274,23 @@
     <script>
         function filtrarLotes(valor) {
             const q = valor.toLowerCase().trim();
-            const items = document.querySelectorAll('#lotes-grid .lote-btn');
-            let visibles = 0;
+            const groups = document.querySelectorAll('.lote-group');
+            let visiblesTotal = 0;
 
-            items.forEach(item => {
-                const codigo  = item.dataset.codigo  || '';
-                const estado  = item.dataset.estado  || '';
-                const coincide = !q || codigo.includes(q) || estado.includes(q);
-                item.style.display = coincide ? '' : 'none';
-                if (coincide) visibles++;
+            groups.forEach(group => {
+                const items = group.querySelectorAll('.lote-btn');
+                let visiblesEnGrupo = 0;
+
+                items.forEach(item => {
+                    const codigo  = item.dataset.codigo  || '';
+                    const estado  = item.dataset.estado  || '';
+                    const coincide = !q || codigo.includes(q) || estado.includes(q);
+                    item.style.display = coincide ? 'block' : 'none';
+                    if (coincide) visiblesEnGrupo++;
+                });
+
+                group.style.display = (visiblesEnGrupo > 0) ? 'block' : 'none';
+                visiblesTotal += visiblesEnGrupo;
             });
 
             // Mostrar mensaje vacío si no hay resultados
@@ -266,11 +299,10 @@
                 empty = document.createElement('div');
                 empty.id = 'lotes-empty-msg';
                 empty.className = 'empty-msg';
-                empty.style.gridColumn = '1 / -1';
                 empty.textContent = 'No se encontraron lotes con ese criterio.';
-                document.getElementById('lotes-grid').appendChild(empty);
+                document.getElementById('lotes-container').appendChild(empty);
             }
-            empty.style.display = (visibles === 0) ? '' : 'none';
+            empty.style.display = (visiblesTotal === 0) ? 'block' : 'none';
         }
     </script>
 

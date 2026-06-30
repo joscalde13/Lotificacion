@@ -28,18 +28,27 @@
             </a>
         </div>
 
-        <div class="grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8">
-            @forelse ($filteredLotes as $codigo => $lote)
-                <button
-                    type="button"
-                    wire:key="lote-{{ $codigo }}"
-                    wire:click="openLote('{{ $codigo }}')"
-                    class="rounded-md border px-3 py-2 text-left text-xs font-semibold text-zinc-900 transition hover:opacity-90 dark:text-white"
-                    style="background-color: {{ $lote['color'] }}22; border-color: {{ $lote['color'] }};"
-                    title="{{ $lote['estado_label'] }}"
-                >
-                    {{ $codigo }}
-                </button>
+        <div class="columns-2 gap-4 sm:columns-3 md:columns-4 lg:columns-6 xl:columns-8">
+            @forelse ($groupedLotes as $letter => $lotes)
+                <div class="break-inside-avoid mb-6">
+                    <h3 class="mb-3 text-base font-bold text-zinc-900 dark:text-white border-b border-zinc-200 pb-1 dark:border-zinc-700">
+                        Letra {{ $letter }}
+                    </h3>
+                    <div class="space-y-2">
+                        @foreach ($lotes as $codigo => $lote)
+                            <button
+                                type="button"
+                                wire:key="lote-{{ $codigo }}"
+                                wire:click="openLote('{{ $codigo }}')"
+                                class="block w-full rounded-md border px-3 py-2 text-left text-xs font-semibold text-zinc-900 transition hover:opacity-90 dark:text-white"
+                                style="background-color: {{ $lote['color'] }}22; border-color: {{ $lote['color'] }};"
+                                title="{{ $lote['estado_label'] }}"
+                            >
+                                {{ $codigo }}
+                            </button>
+                        @endforeach
+                    </div>
+                </div>
             @empty
                 <div class="col-span-full rounded-md border border-zinc-200 px-3 py-4 text-sm text-zinc-600 dark:border-zinc-700 dark:text-zinc-300">
                     No se encontraron lotes con ese criterio.

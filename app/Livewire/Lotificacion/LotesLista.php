@@ -35,8 +35,9 @@ class LotesLista extends Component
                         ->orWhereRaw('LOWER(COALESCE(nombre_adquiriente, \"\")) like ?', ["%{$query}%"]);
                 });
             })
-            ->orderBy('codigo')
-            ->get();
+            ->get()
+            ->sortBy('codigo', SORT_NATURAL)
+            ->values();
 
         if ($this->selectedLoteId === null && $lotes->isNotEmpty()) {
             $this->selectedLoteId = $lotes->first()->id;
